@@ -15,7 +15,7 @@ namespace CrookedCactusApiSdk
         private readonly Connection _connection;
         private RestClient _client;
         private string? _token;
-        public string Token
+        public string? Token
         {
             get
             {
@@ -33,7 +33,7 @@ namespace CrookedCactusApiSdk
             }
         }
 
-        public CrookedCactusClient(string token)
+        public CrookedCactusClient(string? token = null)
         {
             _client = new RestClient(CrookedCactusApiUrl);
             Token = token;
