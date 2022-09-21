@@ -58,7 +58,7 @@ jobs:
       run: dotnet build /p:PackageVersion=${{env.VERSION}} --no-restore -c Release "./CrookedCactusApiSdk/CrookedCactusApiSdk.csproj"
     - name: Pack
       if: ${{ github.event.inputs.deploy }}
-      run: dotnet pack  -c Release --no-restore --no-build /p:PackageVersion=${{env.VERSION}} -o ${{ARTIFACT_PATH}}
+      run: dotnet pack  -c Release --no-restore --no-build /p:PackageVersion=${{env.VERSION}} -o ${{env.ARTIFACT_PATH}}
     - name: Release
       if: ${{ github.event.inputs.deploy }}
-      run: dotnet nuget push ${{ARTIFACT_PATH}}/*.nupkg --source ${NEXUS_REPO} --api-key ${{NEXUS_NUGET_KEY}}
+      run: dotnet nuget push ${{env.ARTIFACT_PATH}}/*.nupkg --source ${{env.NEXUS_REPO}} --api-key ${{env.NEXUS_NUGET_KEY}}
