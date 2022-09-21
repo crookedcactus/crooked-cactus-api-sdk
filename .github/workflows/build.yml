@@ -1,10 +1,6 @@
 name: .NET
 
-on:
-  push:
-    branches: [ "feature/GEN-51-create-launcher" ]
-  pull_request:
-    branches: [ "feature/GEN-51-create-launcher" ]
+on: ["push"]
 
 jobs:
   build:
