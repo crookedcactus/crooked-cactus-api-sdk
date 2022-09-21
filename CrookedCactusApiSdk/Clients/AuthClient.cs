@@ -67,17 +67,17 @@ namespace CrookedCactusApiSdk.Clients
         /// <param name="password"></param>
         /// <param name="confirmPassword"></param>
         /// <exception cref="ApiException">Exception containing the error</exception>
-        //public async void AddToRole(string username, string email, string password, string confirmPassword)
-        //{
-        //    RestResponse response = await _connection.ExecuteAsync("/api/auth/register", null, new { username, email, password, confirmPassword }, Method.Put);
-        //    try
-        //    {
-        //        _connection.ValidateResponse(response);
-        //    }
-        //    catch (ApiException)
-        //    {
-        //        throw;
-        //    }
-        //}
+        public async void AddToRole(string username, string email, string password, string confirmPassword)
+        {
+            RestResponse response = await _connection.ExecuteAsync("/api/auth/register", null, new { username, email, password, confirmPassword }, Method.Put);
+            try
+            {
+                _connection.ValidateResponse(response);
+            }
+            catch (ApiException)
+            {
+                throw;
+            }
+        }
     }
 }

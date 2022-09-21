@@ -1,12 +1,5 @@
 ﻿using CrookedCactusApiSdk.Exceptions;
-using CrookedCactusApiSdk.Model;
-using Newtonsoft.Json;
 using RestSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CrookedCactusApiSdk.Http
 {
@@ -19,6 +12,15 @@ namespace CrookedCactusApiSdk.Http
             Client = client;
         }
 
+        /// <summary>
+        /// Executes a REST call and attempts to serialize the result
+        /// </summary>
+        /// <typeparam name="T">Type to serialize the data to</typeparam>
+        /// <param name="endpoint">Endpoint to hit</param>
+        /// <param name="parameters">Parameters to pass in the query string</param>
+        /// <param name="data">Data to pass in the request body</param>
+        /// <param name="method">HTTP request <see cref="Method"/></param>
+        /// <returns><see cref="RestResponse"/></returns>
         public async Task<RestResponse<T>> ExecuteAsync<T>(string endpoint, List<Parameter>? parameters, object? data = null, Method method = Method.Get)
         {
             RestRequest request = BuildRequest(endpoint, parameters);
@@ -33,6 +35,14 @@ namespace CrookedCactusApiSdk.Http
             return await Client.ExecuteAsync<T>(request);
         }
 
+        /// <summary>
+        /// Executes a REST call
+        /// </summary>
+        /// <param name="endpoint">Endpoint to hit</param>
+        /// <param name="parameters">Parameters to pass in the query string</param>
+        /// <param name="data">Data to pass in the request body</param>
+        /// <param name="method">HTTP request <see cref="Method"/></param>
+        /// <returns><see cref="RestResponse"/></returns>
         public async Task<RestResponse> ExecuteAsync(string endpoint, List<Parameter>? parameters, object? data = null, Method method = Method.Get)
         {
             RestRequest request = BuildRequest(endpoint, parameters);
@@ -47,6 +57,12 @@ namespace CrookedCactusApiSdk.Http
             return await Client.ExecuteAsync(request);
         }
 
+        /// <summary>
+        /// Builds a <see cref="RestRequest"/>
+        /// </summary>
+        /// <param name="endpoint">Endpoint to hit</param>
+        /// <param name="parameters">Parameters to pass to the API call</param>
+        /// <returns><see cref="RestRequest"/></returns>
         private RestRequest BuildRequest(string endpoint, List<Parameter>? parameters)
         {
             RestRequest request = new RestRequest(endpoint);

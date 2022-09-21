@@ -4,6 +4,15 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <OutputType>Library</OutputType>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>Crooked Cactus API SDK</Title>
+    <Authors>Crooked Cactus Studios</Authors>
+    <Company>Crooked Cactus LLC</Company>
+    <Product>Crooked Cactus API SDK</Product>
+    <Description>An SDK for accessing the Crooked Cactus API</Description>
+    <RepositoryUrl>https://github.com/crookedcactus/crooked-cactus-api-sdk</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>
