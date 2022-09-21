@@ -33,4 +33,4 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore "./CrookedCactusApiSdk/CrookedCactusApiSdk.csproj"
     - name: Build
-      run: dotnet build --no-restore "./GenesisLauncher/GenesisLauncher.csproj"
+      run: dotnet build --no-restore "./CrookedCactusApiSdk/CrookedCactusApiSdk.csproj"
