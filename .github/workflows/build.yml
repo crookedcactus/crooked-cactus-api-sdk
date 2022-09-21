@@ -1,6 +1,27 @@
 name: .NET
 
-on: ["push"]
+on:
+    push:
+    pull_request:
+    workflow_dispatch:
+      inputs:
+        deploy:
+          type: boolean
+          description: Create Release
+          default: false
+          required: true
+      version:
+        type: choice
+        description: Version to increment
+        options:
+          - major
+          - feature
+          - bug
+          - rc
+
+env:
+  ARTIFACT_PATH: /app/publish
+  NEXUS_REPO: https://nexus.crookedcactus.net/repository/nuget/
 
 jobs:
   build:
@@ -31,6 +52,15 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: Restore dependencies
-      run: dotnet restore "./CrookedCactusApiSdk/CrookedCactusApiSdk.csproj"
+      run: |
+        nuget sources Add -Name Nexus -Source ${NEXUS_REPO} -username ${NEXUS_USERNAME} -password ${NEXUS_PASSWORD}
+        nuget setapikey ${NEXUS_NUGET_KEY} -source ${NEXUS_REPO}
+        dotnet restore "./CrookedCactusApiSdk/CrookedCactusApiSdk.csproj"
     - name: Build
-      run: dotnet build --no-restore "./CrookedCactusApiSdk/CrookedCactusApiSdk.csproj"
+      run: dotnet build /p:PackageVersion=${VERSION} --no-restore -c Release "./CrookedCactusApiSdk/CrookedCactusApiSdk.csproj"
+    - name: Pack
+      if: ${{ github.event.inputs.deploy }}
+      run: dotnet pack  -c Release --no-restore --no-build /p:PackageVersion=${VERSION} -o ${ARTIFACT_PATH}
+    - name: Release
+      if: ${{ github.event.inputs.deploy }}
+      run: dotnet nuget push ${ARTIFACT_PATH}/*.nupkg --source ${NEXUS_REPO} --api-key ${NEXUS_NUGET_KEY}
