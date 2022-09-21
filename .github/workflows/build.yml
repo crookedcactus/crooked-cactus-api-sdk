@@ -28,7 +28,7 @@ jobs:
     name: Build and Test Pipeline
     runs-on: self-hosted
     container:
-      image: docker.crookedcactus.net/dev-tools/dotnet:1.0.2
+      image: docker.crookedcactus.net/dev-tools/dotnet:1.1.0
       credentials:
                username: ${{ secrets.REGISTRY_USERNAME }}
                password: ${{ secrets.REGISTRY_PASSWORD }}
