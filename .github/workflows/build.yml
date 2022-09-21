@@ -1,0 +1,40 @@
+name: .NET
+
+on:
+  push:
+    branches: [ "feature/GEN-51-create-launcher" ]
+  pull_request:
+    branches: [ "feature/GEN-51-create-launcher" ]
+
+jobs:
+  build:
+    name: Build and Test Pipeline
+    runs-on: self-hosted
+    container:
+      image: docker.crookedcactus.net/dev-tools/dotnet:1.0.2
+      credentials:
+               username: ${{ secrets.REGISTRY_USERNAME }}
+               password: ${{ secrets.REGISTRY_PASSWORD }}
+
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v3
+    - name: Setup Environment
+      run: |
+        VER=$(cat ./${{ github.event.inputs.image}}/VERSION)
+        echo "VERSION=$VER" >> $GITHUB_ENV
+        echo ZIP_FILE=crooked-cactus-api-$VER.zip >> $GITHUB_ENV
+    - name: Increment Version
+      id: env_setup
+      uses: christian-draeger/increment-semantic-version@1.0.2
+      with:
+        current-version: ${{ env.VERSION }}
+        version-fragment: ${{ github.event.inputs.version }}
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+    - name: Restore dependencies
+      run: dotnet restore "./CrookedCactusApiSdk/CrookedCactusApiSdk.csproj"
+    - name: Build
+      run: dotnet build --no-restore "./GenesisLauncher/GenesisLauncher.csproj"
